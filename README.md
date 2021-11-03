@@ -1,6 +1,7 @@
-# telas
+# Delivery Food
 
-A new Flutter project.
+Primeiro projeto em Flutter baseado na imagem abaixo.
+Códigos de desconto validos = 'patraoMaluco' ou 'saborzinho'.
 
 ## Getting Started
 
