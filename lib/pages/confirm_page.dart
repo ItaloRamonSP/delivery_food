@@ -188,7 +188,6 @@ class _ConfirmPageState extends State<ConfirmPage> {
                 child: Container(
                   margin: EdgeInsets.only(top: 10, bottom: 20),
                   height: 50,
-                  width: MediaQuery.of(context).size.width * 0.36,
                   child: LimpaCompra(
                     icon: Icons.cleaning_services_outlined,
                     title: 'Excluir Voucher',

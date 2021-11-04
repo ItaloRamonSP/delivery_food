@@ -26,24 +26,24 @@ class TelasCard extends StatelessWidget {
       children: [
         Column(
           children: [
-            Row(children: [
-              ClipRRect(
-                child: SizedBox(
-                  width: 100,
-                  height: 110,
-                  child: Image.asset(
-                    image,
-                    fit: BoxFit.fill,
+            Container(
+              width: double.infinity,
+              child: Row(children: [
+                ClipRRect(
+                  child: SizedBox(
+                    width: 100,
+                    height: 110,
+                    child: Image.asset(
+                      image,
+                      fit: BoxFit.fill,
+                    ),
                   ),
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              Row(children: [
-                Column(children: [
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Container(
-                    width: 250,
-                    alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(left: 10, top: 15),
+                    margin: EdgeInsets.only(left: 10, top: 5),
                     child: Text(
                       title,
                       style: const TextStyle(
@@ -53,42 +53,45 @@ class TelasCard extends StatelessWidget {
                     ),
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width - 160,
                     margin: EdgeInsets.only(left: 10, top: 30),
-                    child: Row(children: [
-                      Button(
-                        func: onSub,
-                        text: "-",
-                      ),
-                      Text(
-                        '$quantity',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      Button(
-                        func: onAdd,
-                        text: "+",
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        alignment: Alignment.bottomRight,
-                        child: Text(
-                          'R\$' '$price',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Button(
+                                func: onSub,
+                                text: "-",
+                              ),
+                              Text(
+                                '$quantity',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Button(
+                                func: onAdd,
+                                text: "+",
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ]),
+                          Text(
+                            'R\$' '$price',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ]),
                   ),
                 ]),
               ]),
-            ]),
+            ),
             Container(
                 width: MediaQuery.of(context).size.width,
                 height: 1,
-                margin: EdgeInsets.only(bottom: 5,top: 5),
+                margin: EdgeInsets.only(bottom: 5, top: 5),
                 decoration: BoxDecoration(color: Colors.black)),
           ],
         ),
