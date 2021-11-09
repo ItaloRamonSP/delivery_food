@@ -16,18 +16,17 @@ class ConfirmPage extends StatefulWidget {
 }
 
 class _ConfirmPageState extends State<ConfirmPage> {
-  String novoCep = 'insira um cep';
+  String novoCep = 'Insira um CEP';
   double valorVoucher = 0;
   late double priceFinal;
   Color colorDesconto = Colors.black;
   double flag = 0;
 
-  verifica(){
+  verifica() {
     bool colorController = SharedPreferencesRepository.getBool('colorDesconto');
-    if(colorController){
+    if (colorController) {
       colorDesconto = Colors.green;
-    }
-    else {
+    } else {
       colorDesconto = Colors.black;
     }
   }
@@ -59,7 +58,8 @@ class _ConfirmPageState extends State<ConfirmPage> {
                 'Limpar',
                 style: TextStyle(color: Colors.red),
               ),
-              onPressed: () => Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false),
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, '/home', (route) => false),
             )
           ],
         ),
@@ -132,7 +132,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                 onPressed: () {
                                   showDialog(
                                       context: context,
-                                      builder: (context) {
+                                      builder: (contextDialog) {
                                         return StatefulBuilder(
                                           builder: (context, setState) =>
                                               Voucher(
@@ -141,14 +141,34 @@ class _ConfirmPageState extends State<ConfirmPage> {
                                         );
                                       }).then((text) {
                                     Future _searchCep() async {
-                                      final cep = text;
-                                      final response =
-                                          await ViaCepService.fetchCep(
-                                              cep: cep);
-                                      setState(() {
-                                        novoCep =
-                                            '${response.logradouro}, ${response.bairro}, ${response.localidade} - ${response.uf}';
-                                      });
+                                      try {
+                                        final cep = text;
+                                        final response =
+                                            await ViaCepService.fetchCep(
+                                          cep: cep,
+                                        );
+
+                                        if (response.logradouro == null) {
+                                          throw Exception();
+                                        }
+
+                                        setState(() {
+                                          novoCep =
+                                              '${response.logradouro}, ${response.bairro}, ${response.localidade} - ${response.uf}';
+                                        });
+                                      } on Exception catch (_) {
+                                        setState(() {
+                                          novoCep = 'Insira um CEP';
+                                        });
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'CEP Incorreto ou não encontrado, tente novamente'),
+                                          ),
+                                        );
+                                      }
                                     }
 
                                     _searchCep();
@@ -195,8 +215,8 @@ class _ConfirmPageState extends State<ConfirmPage> {
                     press: () async {
                       await Services().RemoveVoucher();
                       setState(() {
-                        valorVoucher =
-                            SharedPreferencesRepository.getDouble('valorVoucher');
+                        valorVoucher = SharedPreferencesRepository.getDouble(
+                            'valorVoucher');
                         priceFinal =
                             SharedPreferencesRepository.getDouble('priceFinal');
                         verifica();
@@ -230,8 +250,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                       context: context,
                       builder: (context) {
                         return StatefulBuilder(
-                          builder: (context, setState) =>
-                              FinalVoucher(),
+                          builder: (context, setState) => FinalVoucher(),
                         );
                       });
                 },
